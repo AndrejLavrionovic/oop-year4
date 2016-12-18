@@ -8,21 +8,27 @@ import java.lang.reflect.Modifier;
 
 public class ReflectionExample {
 	
+	// Instance of a Class type
 	private Class c;
+	
+		// main method for running reflection
+		// expample:
+	 	// java -cp ./bin ie.gmit.sw.ReflecionExample ie.gmit.sw.Person <Enter>
 	   public static void main(String args[]){
-	        if (args.length == 0) {
+	        if (args.length == 0) { // if class is not specified as argument
 	            System.out.println("Please specify a class name.");
 	            System.exit(1);
 	        }
 	        try {
-	            Class queryClass = Class.forName(args[0]);
+	            Class queryClass = Class.forName(args[0]); // reflection
 	            new ReflectionExample(queryClass);
 	        } catch (ClassNotFoundException ee) {
-	            System.out.println("Couldn't find class '"+ args[0] + "'");
+	            System.out.println("Couldn't find class '"+ args[0] + "'"); // if class is not found
 	            System.exit(1);
 	        }
 	   }
 
+	   // Constructor
 	   public ReflectionExample(Class c){
 	      super();
 	      this.c = c;
@@ -33,6 +39,7 @@ public class ReflectionExample {
 	      createArray();
 	   }
 
+	   // Print all constructors
 	   public void printConstructors(){
 	      Constructor ctorlist[] = c.getDeclaredConstructors();
 	      System.out.println("--------------" + ctorlist.length + " Constructors --------------");
@@ -54,8 +61,10 @@ public class ReflectionExample {
 	      }
 	   }
 
+	   // print all fields
 	   public void printFields(){
 	      Field fieldlist[] = c.getDeclaredFields();
+	      System.out.println("--------------" + fieldlist.length + " Fields --------------");
 	      for (int i = 0; i < fieldlist.length; i++) {
 	         Field fld = fieldlist[i];
 	         System.out.println("\tname = " + fld.getName());
@@ -67,6 +76,7 @@ public class ReflectionExample {
 	      }
 	   }
 
+	   // print all methods
 	   public void printMethods(){
 	      Method methlist[] = c.getDeclaredMethods();
 	      System.out.println("--------------" + methlist.length + " Methods --------------");
