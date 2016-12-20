@@ -28,17 +28,6 @@ public class ReflectionExample {
 		// read jar;
 		// jar passed as argument: java -cp ./bin ie.gmit.sw.ReflectionExample ../people.jar
 		getJar(args[0]);
-		
-		/*
-		try {
-			System.out.println("\n\n\n\tCLASS ===> " + args[0]);
-			Class queryClass = Class.forName(args[0]); // reflection
-			new ReflectionExample(queryClass);
-		} catch (ClassNotFoundException ee) {
-			System.out.println("Couldn't find class '" + args[0] + "'"); // if class is not found
-			System.exit(1);
-		}
-		*/
 	}
 
 	// Constructor
@@ -122,21 +111,26 @@ public class ReflectionExample {
 		}
 	}
 	
+	// inspect jar library
 	public static JarEntry getJar(String jar){
 		
 		try {
 			
-			JarInputStream in = new JarInputStream(new FileInputStream(new File(jar)));
-			JarEntry next = in.getNextJarEntry();
 			
-			while(next != null){
-				if(next.getName().endsWith(".class")){
+			JarInputStream in = new JarInputStream(new FileInputStream(new File(jar))); // get stream
+			JarEntry next = in.getNextJarEntry(); // get jar instance
+			
+			
+			while(next != null){ // run through
+				if(next.getName().endsWith(".class")){ // search for classes
+					
+					// get class name
 					String name = next.getName().replaceAll("/", "\\.");
 					name = name.replaceAll(".class", "");
 					if (!name.contains("$")) name.substring(0, name.length() - ".class".length());
-					System.out.println(name);
+					System.out.println("\n\n" + name); // print class name
 					
-					System.out.println("\n\n\n\tCLASS ===> " + name);
+					// inspect class
 					Class queryClass;
 					try {
 						queryClass = Class.forName(name);
