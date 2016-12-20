@@ -35,10 +35,28 @@ public class ReflectionExample {
 		super();
 		this.c = c;
 
+		getClassPackage();
+		printIsInterface();
 		printConstructors();
 		printFields();
 		printMethods();
 		createArray();
+	}
+	
+	// get class package
+	public void getClassPackage(){
+		Package pack = c.getPackage(); //Get the package
+		String packName = pack.getName();
+		
+		System.out.println("Package ==> " + packName);
+	}
+	
+	// Is interface
+	public void printIsInterface(){
+		
+		String isInterface = c.isInterface() ? "YES" : "NO";
+		
+		System.out.println("Is Interface: " + isInterface);
 	}
 
 	// Print all constructors
