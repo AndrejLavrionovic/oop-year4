@@ -31,6 +31,7 @@ public class ReflectionExample {
 		
 		/*
 		try {
+			System.out.println("\n\n\n\tCLASS ===> " + args[0]);
 			Class queryClass = Class.forName(args[0]); // reflection
 			new ReflectionExample(queryClass);
 		} catch (ClassNotFoundException ee) {
@@ -134,6 +135,17 @@ public class ReflectionExample {
 					name = name.replaceAll(".class", "");
 					if (!name.contains("$")) name.substring(0, name.length() - ".class".length());
 					System.out.println(name);
+					
+					System.out.println("\n\n\n\tCLASS ===> " + name);
+					Class queryClass;
+					try {
+						queryClass = Class.forName(name);
+						new ReflectionExample(queryClass);
+					} catch (ClassNotFoundException e) {
+						System.out.println("Couldn't find class '" + name + "'"); // if class is not found
+						System.exit(1);
+					} // reflection
+					
 				}
 				next = in.getNextJarEntry();
 			}
