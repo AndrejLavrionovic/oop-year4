@@ -8,6 +8,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 
@@ -15,6 +17,7 @@ public class ReflectionExample {
 
 	// Instance of a Class type
 	private Class c;
+	List<Class> classes = new ArrayList<Class>();
 
 	// main method for running reflection
 	// expample:
@@ -37,6 +40,7 @@ public class ReflectionExample {
 
 		getClassPackage();
 		printIsInterface();
+		printInterfaces();
 		printConstructors();
 		printFields();
 		printMethods();
@@ -57,6 +61,20 @@ public class ReflectionExample {
 		String isInterface = c.isInterface() ? "YES" : "NO";
 		
 		System.out.println("Is Interface: " + isInterface);
+	}
+	
+	// Print implemented interfaces
+	public void printInterfaces(){
+		Class interfaces[] = c.getInterfaces(); // get all imlemented interfaces
+		System.out.println("--------------" + interfaces.length + " Implemented Interfaces --------------");
+		if(interfaces.length > 0){
+			for(Class iface : interfaces){
+				System.out.println("\timplements " + iface.getName());
+			}
+		}
+		else{
+			System.out.println("\n\t" + c.getName() + " has no any implemented interfaces.");
+		}
 	}
 
 	// Print all constructors
@@ -130,7 +148,9 @@ public class ReflectionExample {
 	}
 	
 	// inspect jar library
-	public static JarEntry getJar(String jar){
+	public static List<Class> getJar(String jar){
+		
+		List<Class> cls = new ArrayList<Class>();
 		
 		try {
 			
@@ -152,6 +172,7 @@ public class ReflectionExample {
 					Class queryClass;
 					try {
 						queryClass = Class.forName(name);
+						cls.add(queryClass);
 						new ReflectionExample(queryClass);
 					} catch (ClassNotFoundException e) {
 						System.out.println("Couldn't find class '" + name + "'"); // if class is not found
@@ -161,12 +182,44 @@ public class ReflectionExample {
 				}
 				next = in.getNextJarEntry();
 			}
-			return next;
+			return cls;
 			
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 			System.exit(1);
 		}
+		return null;
+	}
+	
+	/**
+	 * Calculation of abstraction.
+	 * This metric calculates how the package is abstract.
+	 * If A = 0, then package is completely abstract and  not changeable.
+	 * A = Na / Nc
+	 * Na - number of interfaces and abstract classes
+	 * Nc - number of concrete classes
+	 * Should be compared to instability to be sure that package are not complete concrete
+	 * and not a highly unstable.
+	 */
+	
+	public double calculateAbstraction(){
+		
+		// We need to know Na and Nc
+		int Na = 0;
+		int Nc = 0;
+		return 0;
+	}
+	
+	// Na calculation
+	public int numberOfAbstractClasses(){
+		
+		Class interfaces[] = c.getInterfaces();
+		//Class abstractClasses[]
+		return 0;
+	}
+	
+	// get list of classes
+	public List<Class> getAllClasses(){
 		return null;
 	}
 }
