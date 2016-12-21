@@ -1,5 +1,7 @@
 package ie.gmit.sw;
 
+import ie.gmit.sw.measure.AbstractionMeasure;
+import ie.gmit.sw.measure.Measurable;
 import ie.gmit.sw.reflection.ClassLab;
 import ie.gmit.sw.reflection.JarContent;
 
@@ -19,6 +21,12 @@ public class Runner {
 		printConcreteClasses(cls);
 		printInterfaces(cls);
 		printAbstracts(cls);
+		
+		// measure abstraction
+		Measurable abstraction = new AbstractionMeasure(cls);
+		abstraction.measure(cls);
+		System.out.println("\n\n-------ABSTRACTION DEGREE--------");
+		System.out.println(String.format("==> Abstracion: (A = Na / NC) = %.1f", abstraction.getResult()));
 	}
 
 	// print all classes that present in the jar
@@ -60,7 +68,7 @@ public class Runner {
 	public static void printAbstracts(JarContent cls){
 		
 		ClassLab c = new ClassLab();
-		JarContent abs = c.getAbstracts(cls);
+		JarContent abs = c.getAbstractClasses(cls);
 		
 		System.out.println("\n\n-----ABSTRACT CLASSES(" + abs.numberOfClasses() + ")---------");
 		printClasses(abs);

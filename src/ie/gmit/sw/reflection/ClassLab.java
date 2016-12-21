@@ -91,8 +91,8 @@ public class ClassLab {
 		return ifaces;
 	}
 	
-	// get all abstract classes
-	public JarContent getAbstracts(JarContent jarClasses){
+	// get only abstract classes excluding interfaces
+	public JarContent getAbstractClasses(JarContent jarClasses){
 		
 		JarContent abs = new JarContent();
 		for(int i = 0; i < jarClasses.numberOfClasses(); i++){
@@ -100,6 +100,22 @@ public class ClassLab {
 			
 			// filter abstract and interfaces
 			if(Modifier.isAbstract(c.getModifiers()) && !c.isInterface()){
+				abs.addClass(c);
+			}
+		}
+		
+		return abs;
+	}
+	
+	// get all abstracts includeing interfaces
+	public JarContent getAbstracts(JarContent jarClasses){
+		
+		JarContent abs = new JarContent();
+		for(int i = 0; i < jarClasses.numberOfClasses(); i++){
+			Class c = jarClasses.getClass(i);
+			
+			// filter abstract and interfaces
+			if(Modifier.isAbstract(c.getModifiers())){
 				abs.addClass(c);
 			}
 		}
