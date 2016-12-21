@@ -3,13 +3,24 @@ package ie.gmit.sw.reflection;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.reflect.Modifier;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 
+/**
+ * 
+ * @author g00196984
+ *
+ * ClassLab is used to work with classes
+ * that are retrieved from Jar pachage
+ */
+
 public class ClassLab {
 	
+	// fields
 	private JarContent jarClasses;
 
+	// get all classes from jar
 	public JarContent getAllClasses(String jarName){
 		
 		jarClasses = new JarContent();
@@ -46,5 +57,21 @@ public class ClassLab {
 		}
 		
 		return jarClasses;
+	}
+	
+	// search only concrete classes
+	public JarContent getAllConcreteClasses(JarContent jarClasses){
+		
+		JarContent concretes = new JarContent();
+		for(int i = 0; i < jarClasses.numberOfClasses(); i++){
+			Class c = jarClasses.getClass(i);
+			
+			// filter abstract and interfaces
+			if(!(c.isInterface() || Modifier.isAbstract(c.getModifiers()))){
+				concretes.addClass(c);
+			}
+		}
+		
+		return concretes;
 	}
 }

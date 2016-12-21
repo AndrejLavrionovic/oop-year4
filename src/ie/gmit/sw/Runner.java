@@ -4,20 +4,51 @@ import ie.gmit.sw.reflection.ClassLab;
 import ie.gmit.sw.reflection.JarContent;
 
 public class Runner {
+	
 
+	// main method for running reflection
+	// example:
+	// java -cp ./bin:../people.jar ie.gmit.sw.Runner ../people.jar
 	public static void main(String[] args) {
 		
-		printAllClasses(args[0]);
+		// retrieve classes from jar
+		JarContent cls = getClasses(args[0]);
+		
+		// prints
+		printAllClasses(cls);
+		printConcreteClasses(cls);
 	}
 
-	public static void printAllClasses(String jarName){
+	// print all classes that present in the jar
+	public static void printAllClasses(JarContent cls){
+		
+		System.out.println("\n\n-----ALL CLASSES(" + cls.numberOfClasses() + ")---------");
+		printClasses(cls);
+	}
+	
+	// get all classes that jar contains
+	private static JarContent getClasses(String jarName){
+		ClassLab c = new ClassLab();
+		JarContent cls = c.getAllClasses(jarName);
+		
+		return cls;
+	}
+	
+	// print only concrete classes that jar contains
+	public static void printConcreteClasses(JarContent cls){
 		
 		ClassLab c = new ClassLab();
+		JarContent concretes = c.getAllConcreteClasses(cls);
 		
-		JarContent cls = c.getAllClasses(jarName);
-		System.out.println("number of classes: " + cls.numberOfClasses());
-		for(int i = 0; i < cls.numberOfClasses(); i++){
-			Class cl = cls.getClass(i);
+		System.out.println("\n\n-----CONCRETE CLASSES(" + concretes.numberOfClasses() + ")---------");
+		printClasses(concretes);
+	}
+	
+	// print
+	public static void printClasses(JarContent csl){
+		
+		for(int i = 0; i < csl.numberOfClasses(); i++){
+			Class cl = csl.getClass(i);
 			
 			System.out.println("==> " + cl.getName());
 		}
