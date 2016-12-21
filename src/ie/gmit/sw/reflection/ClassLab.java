@@ -60,7 +60,7 @@ public class ClassLab {
 	}
 	
 	// search only concrete classes
-	public JarContent getAllConcreteClasses(JarContent jarClasses){
+	public JarContent getConcretes(JarContent jarClasses){
 		
 		JarContent concretes = new JarContent();
 		for(int i = 0; i < jarClasses.numberOfClasses(); i++){
@@ -73,5 +73,37 @@ public class ClassLab {
 		}
 		
 		return concretes;
+	}
+	
+	// get only interfaces
+	public JarContent getInterfaces(JarContent jarClasses){
+		
+		JarContent ifaces = new JarContent();
+		for(int i = 0; i < jarClasses.numberOfClasses(); i++){
+			Class c = jarClasses.getClass(i);
+			
+			// filter abstract and interfaces
+			if(c.isInterface()){
+				ifaces.addClass(c);
+			}
+		}
+		
+		return ifaces;
+	}
+	
+	// get all abstract classes
+	public JarContent getAbstracts(JarContent jarClasses){
+		
+		JarContent abs = new JarContent();
+		for(int i = 0; i < jarClasses.numberOfClasses(); i++){
+			Class c = jarClasses.getClass(i);
+			
+			// filter abstract and interfaces
+			if(Modifier.isAbstract(c.getModifiers()) && !c.isInterface()){
+				abs.addClass(c);
+			}
+		}
+		
+		return abs;
 	}
 }

@@ -17,6 +17,8 @@ public class Runner {
 		// prints
 		printAllClasses(cls);
 		printConcreteClasses(cls);
+		printInterfaces(cls);
+		printAbstracts(cls);
 	}
 
 	// print all classes that present in the jar
@@ -38,10 +40,30 @@ public class Runner {
 	public static void printConcreteClasses(JarContent cls){
 		
 		ClassLab c = new ClassLab();
-		JarContent concretes = c.getAllConcreteClasses(cls);
+		JarContent concretes = c.getConcretes(cls);
 		
 		System.out.println("\n\n-----CONCRETE CLASSES(" + concretes.numberOfClasses() + ")---------");
 		printClasses(concretes);
+	}
+	
+	// print all interfaces
+	public static void printInterfaces(JarContent cls){
+		
+		ClassLab c = new ClassLab();
+		JarContent ifs = c.getInterfaces(cls);
+		
+		System.out.println("\n\n-----INTERFACES(" + ifs.numberOfClasses() + ")---------");
+		printClasses(ifs);
+	}
+	
+	// print Abstracts
+	public static void printAbstracts(JarContent cls){
+		
+		ClassLab c = new ClassLab();
+		JarContent abs = c.getAbstracts(cls);
+		
+		System.out.println("\n\n-----ABSTRACT CLASSES(" + abs.numberOfClasses() + ")---------");
+		printClasses(abs);
 	}
 	
 	// print
