@@ -32,13 +32,13 @@ public class AbstractionMeasure implements Measurable {
 	}
 	
 	// number of all abstract classes including interfaces 
-	public int getAbstractsNum(JarContent cls){
+	private int getAbstractsNum(JarContent cls){
 		JarContent abs = this.c.getAbstracts(cls);
 		return abs.numberOfClasses();
 	}
 	
 	// number of all concrete classes
-	public int getConcretesNum(JarContent cls){
+	private int getConcretesNum(JarContent cls){
 		JarContent con = this.c.getConcretes(cls);
 		return con.numberOfClasses();
 	}

@@ -1,5 +1,10 @@
 package ie.gmit.sw;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedType;
+import java.lang.reflect.Field;
+import java.lang.reflect.Type;
+
 import ie.gmit.sw.measure.AbstractionMeasure;
 import ie.gmit.sw.measure.Measurable;
 import ie.gmit.sw.reflection.ClassLab;
@@ -16,6 +21,7 @@ public class Runner {
 		// retrieve classes from jar
 		JarContent cls = getClasses(args[0]);
 		
+		/*
 		// prints
 		printAllClasses(cls);
 		printConcreteClasses(cls);
@@ -27,6 +33,9 @@ public class Runner {
 		abstraction.measure(cls);
 		System.out.println("\n\n-------ABSTRACTION DEGREE--------");
 		System.out.println(String.format("==> Abstracion: (A = Na / NC) = %.1f", abstraction.getResult()));
+		*/
+		
+		printDetails(cls);
 	}
 
 	// print all classes that present in the jar
@@ -72,6 +81,68 @@ public class Runner {
 		
 		System.out.println("\n\n-----ABSTRACT CLASSES(" + abs.numberOfClasses() + ")---------");
 		printClasses(abs);
+	}
+	
+	public static void printDetails(JarContent cls){
+		
+		ClassLab c = new ClassLab();
+		
+		System.out.println("---------CLASSES (" + cls.numberOfClasses() + ")------------\n");
+		
+		// testing for class manipulating
+		for(int i = 0; i < cls.numberOfClasses(); i++){
+			Class cl = cls.getClass(i);
+			
+			System.out.println("==> " + cl.getSimpleName() + "-----------------------");
+			
+			Field flds[] = cl.getDeclaredFields();
+			
+			System.out.println("-----Fields------");
+			for(Field item : flds){
+				
+				Type t = item.getType();
+				// System.out.println("--> " + t.getTypeName());
+				
+				for(int k = 0; k < cls.numberOfClasses(); k++){
+					if(t.getTypeName().equals(cls.getClass(k).getName())){
+						System.out.println("==> " + item.getName() + " -- " + t.getTypeName());
+					}
+				}
+			}
+			
+			/*
+			String fullname = cl.getName();
+			String name = cl.getSimpleName();
+			String canname = cl.getCanonicalName();
+			
+			String supercls = null;
+			if(!cl.isInterface()){
+				supercls = cl.getAnnotatedSuperclass().getType().getTypeName();
+			}
+			
+			
+			
+			System.out.printf("\n==>  %-15s    |", name);
+			
+			if(ifaces.length > 0){
+				for(int j = 0; j < ifaces.length; j++){
+					Type t = ifaces[j].getType();
+					String tname = t.getTypeName();
+					System.out.printf("%-15s", tname);
+				}
+				
+				ifaces = null;
+			}
+			else{
+				System.out.printf("%-15s", "");
+			}
+			if(supercls != null){
+				System.out.printf("%50s %s", "superclass -> ", supercls);
+			}
+			*/
+
+			System.out.println("\n\n");
+		}
 	}
 	
 	// print

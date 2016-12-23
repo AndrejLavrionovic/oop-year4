@@ -3,6 +3,7 @@ package ie.gmit.sw.reflection;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Modifier;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
@@ -107,7 +108,7 @@ public class ClassLab {
 		return abs;
 	}
 	
-	// get all abstracts includeing interfaces
+	// get all abstracts including interfaces
 	public JarContent getAbstracts(JarContent jarClasses){
 		
 		JarContent abs = new JarContent();
@@ -121,5 +122,48 @@ public class ClassLab {
 		}
 		
 		return abs;
+	}
+	
+	// get all implemented interfaces
+	public JarContent getAnnotatedInterfaces(Class c){
+		
+		JarContent implimentedInterfaces = new JarContent();
+		
+		AnnotatedType ifaces[] = c.getAnnotatedInterfaces();
+		for(AnnotatedType t : ifaces){
+			Class cl = t.getClass();
+			implimentedInterfaces.addClass(cl);
+		}
+		return implimentedInterfaces;
+	}
+	
+	/*
+	 * Get superclass if exist for given class
+	 * It ignores any standard classes belongs to
+	 * the JDK/JRE environments
+	 */
+	public Class getSuperclass(Class c, JarContent cls){
+		
+		if(!c.isInterface()){ // if class is not an interface
+			Class sclass = typeFilter(cls, c);
+			return sclass;
+		}
+		else{
+			return null;
+		}
+	}
+	
+	/*
+	 * Filter for types. ignores all standards classes
+	 * belongs to JDK/JRE.
+	 */
+	public Class typeFilter(JarContent cls, Class c){
+		
+		for(int j = 0; j < cls.numberOfClasses(); j++){
+			if(c.equals(cls.getClass(j))){
+				return c;
+			}
+		}
+		return null;
 	}
 }
