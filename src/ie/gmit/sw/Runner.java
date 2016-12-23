@@ -6,6 +6,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 
 import ie.gmit.sw.measure.AbstractionMeasure;
+import ie.gmit.sw.measure.InstabilityMeasure;
 import ie.gmit.sw.measure.Measurable;
 import ie.gmit.sw.reflection.ClassLab;
 import ie.gmit.sw.reflection.JarContent;
@@ -27,15 +28,23 @@ public class Runner {
 		printConcreteClasses(cls);
 		printInterfaces(cls);
 		printAbstracts(cls);
+		*/
 		
 		// measure abstraction
 		Measurable abstraction = new AbstractionMeasure(cls);
 		abstraction.measure(cls);
 		System.out.println("\n\n-------ABSTRACTION DEGREE--------");
 		System.out.println(String.format("==> Abstracion: (A = Na / NC) = %.1f", abstraction.getResult()));
-		*/
 		
-		printDetails(cls);
+		// Efference coupling measure
+		InstabilityMeasure ce = new InstabilityMeasure();
+		for(int i = 0; i < cls.numberOfClasses(); i++){
+			ce.efferentCoupling(cls.getClass(i), cls);
+		}
+		
+		//printDetails(cls);
+		
+		
 	}
 
 	// print all classes that present in the jar

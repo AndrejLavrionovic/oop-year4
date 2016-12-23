@@ -1,5 +1,8 @@
 package ie.gmit.sw.measure;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Type;
+
 import ie.gmit.sw.reflection.ClassLab;
 import ie.gmit.sw.reflection.JarContent;
 
@@ -36,6 +39,7 @@ public class InstabilityMeasure implements Measurable {
 		
 		int ifaceNum = 0;
 		int superClass = 0;
+		int composition = 0;
 		
 		// 1) implemented from interfaces
 		JarContent ifaces = cLab.getAnnotatedInterfaces(c);
@@ -44,8 +48,18 @@ public class InstabilityMeasure implements Measurable {
 		// 2) extended from superclasses
 		if(cLab.getSuperclass(c, cls) != null) superClass = 1;
 		
-		// 3) dependencies
+		// 3) Full composition
+		// checking for full composition
+		// declared instancies
+		JarContent instances = cLab.getInstances(cls, c);
+		composition = instances.numberOfClasses();
 		
+		// 4) 
+		
+		System.out.println("--------CLASS => " + c.getName() + "------------");
+		System.out.println("--------INTERFACES (" + ifaceNum + ")------------");
+		System.out.println("--------SUPERCLASSES (" + superClass + ")------------");
+		System.out.println("--------INSTANCES (" + composition + ")------------\n\n");
 			
 		
 		return 0;

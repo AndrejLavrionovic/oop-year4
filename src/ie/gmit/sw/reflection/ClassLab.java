@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.AnnotatedType;
+import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.Type;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 
@@ -145,12 +147,15 @@ public class ClassLab {
 	public Class getSuperclass(Class c, JarContent cls){
 		
 		if(!c.isInterface()){ // if class is not an interface
-			Class sclass = typeFilter(cls, c);
-			return sclass;
+			
+			Class sclass = c.getSuperclass();
+			for(int k = 0; k < cls.numberOfClasses(); k++){
+				if(sclass.getName().equals(cls.getClass(k).getName())){
+					return sclass;
+				}
+			}
 		}
-		else{
-			return null;
-		}
+		return null;
 	}
 	
 	/*
@@ -165,5 +170,27 @@ public class ClassLab {
 			}
 		}
 		return null;
+	}
+	
+	public JarContent getInstances(JarContent cls, Class c){
+		
+		JarContent classInstances = new JarContent();
+		
+		// checking for full composition
+		// declared instancies
+		Field flds[] = c.getDeclaredFields();
+		
+		for(Field item : flds){
+			
+			Type t = item.getType();
+			
+			for(int k = 0; k < cls.numberOfClasses(); k++){
+				if(t.getTypeName().equals(cls.getClass(k).getName())){
+					Class instnaceType = cls.getClass(k);
+					classInstances.addClass(instnaceType);
+				}
+			}
+		}
+		return classInstances;
 	}
 }
