@@ -4,6 +4,6 @@ import ie.gmit.sw.reflection.JarContent;
 
 public interface Measurable {
 
-	public void measure(JarContent cls);
+	public void measure();
 	public double getResult();
 }

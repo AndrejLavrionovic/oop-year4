@@ -1,12 +1,12 @@
 package ie.gmit.sw;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.AnnotatedType;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.Type;
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 
 import ie.gmit.sw.measure.AbstractionMeasure;
-import ie.gmit.sw.measure.InstabilityMeasure;
+import ie.gmit.sw.measure.EfferentCoupling;
 import ie.gmit.sw.measure.Measurable;
 import ie.gmit.sw.reflection.ClassLab;
 import ie.gmit.sw.reflection.JarContent;
@@ -32,17 +32,22 @@ public class Runner {
 		
 		// measure abstraction
 		Measurable abstraction = new AbstractionMeasure(cls);
-		abstraction.measure(cls);
+		abstraction.measure();
 		System.out.println("\n\n-------ABSTRACTION DEGREE--------");
 		System.out.println(String.format("==> Abstracion: (A = Na / NC) = %.1f", abstraction.getResult()));
 		
+		
 		// Efference coupling measure
-		InstabilityMeasure ce = new InstabilityMeasure();
 		for(int i = 0; i < cls.numberOfClasses(); i++){
-			ce.efferentCoupling(cls.getClass(i), cls);
+			EfferentCoupling ce = new EfferentCoupling(cls.getClass(i), cls);
+			System.out.println("----CLASS -> " + cls.getClass(i).getSimpleName() + " --> Ce = " + ce.getDepNum());
 		}
 		
-		//printDetails(cls);
+		
+		/*
+		System.out.println("\n\n");
+		printDetails(cls);
+		*/
 		
 		
 	}
@@ -98,26 +103,48 @@ public class Runner {
 		
 		System.out.println("---------CLASSES (" + cls.numberOfClasses() + ")------------\n");
 		
+		
+		
 		// testing for class manipulating
 		for(int i = 0; i < cls.numberOfClasses(); i++){
 			Class cl = cls.getClass(i);
 			
-			System.out.println("==> " + cl.getSimpleName() + "-----------------------");
+			System.out.println("--------CLASS => " + cl.getName() + "------------");
 			
-			Field flds[] = cl.getDeclaredFields();
+			Constructor constructors[] = cl.getConstructors();
 			
-			System.out.println("-----Fields------");
-			for(Field item : flds){
+			System.out.println("-----CONSTRUCTORS (" + constructors.length + ") ------");
+			for(int j = 0; j < constructors.length; j++){
 				
-				Type t = item.getType();
+				Constructor item = constructors[j];
+				Class constructorclasses[] = item.getParameterTypes();
+				
+				System.out.println("==> Constructor[" + j + "] -> parameters(" + constructorclasses.length + ")");
 				// System.out.println("--> " + t.getTypeName());
-				
-				for(int k = 0; k < cls.numberOfClasses(); k++){
-					if(t.getTypeName().equals(cls.getClass(k).getName())){
-						System.out.println("==> " + item.getName() + " -- " + t.getTypeName());
+				if(constructorclasses.length > 0){
+					for(int k = 0; k < constructorclasses.length; k++){
+						System.out.println("    Parameter type: " + constructorclasses[k].getSimpleName());
 					}
 				}
 			}
+			
+			Method methods[] = cl.getDeclaredMethods();
+			
+			System.out.println("-----METHODS (" + methods.length + ") ------");
+			
+			for(int j = 0; j < methods.length; j++){
+				Method m = methods[j];
+				System.out.println("==> Method: " + m.getName());
+				System.out.println("    Retrun: " + m.getReturnType().getName());
+				System.out.println("    Parameters(" + m.getParameterCount() + ")");
+				Parameter parameters[] = m.getParameters();
+				for (int k = 0; k < m.getParameterCount(); k++){
+					System.out.println("    [" + k + "] -> " + parameters[k].getType().getSimpleName());
+				}
+			}
+			
+			System.out.println();
+			printFields(cl);
 			
 			/*
 			String fullname = cl.getName();
@@ -161,6 +188,24 @@ public class Runner {
 			Class cl = csl.getClass(i);
 			
 			System.out.println("==> " + cl.getName());
+		}
+	}
+	
+	public static void printFields(Class c){
+		Field f[] = c.getFields();
+		System.out.println("==> FIELDS(" + f.length + ")-----------------");
+		for(int k = 0; k < f.length; k++){
+			System.out.println("    [" + k + "] -> " + f[k].getType().getSimpleName());
+		}
+		
+	}
+	
+	public static void printSuperclass(Class c){
+		if(!c.isInterface()){
+			System.out.println("-------CLASS -> " + c.getSimpleName() + " extends " + c.getSuperclass().getSimpleName());
+		}
+		else{
+			System.out.println("-------CLASS -> " + c.getSimpleName() + " is interface.");
 		}
 	}
 }

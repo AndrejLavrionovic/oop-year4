@@ -14,11 +14,18 @@ public class InstabilityMeasure implements Measurable {
 	private double instability;
 	
 
-	// classlab instance => full composition
+	// instances
 	private ClassLab cLab = new ClassLab();
+	private Class c;
+	
+	public InstabilityMeasure(){}
+
+	public InstabilityMeasure(Class c) {
+		this.c = c;
+	}
 
 	@Override
-	public void measure(JarContent cls) {
+	public void measure() {
 		
 	}
 
@@ -35,14 +42,14 @@ public class InstabilityMeasure implements Measurable {
 	 * 
 	 * 1) check all inheritances
 	 */
-	public int efferentCoupling(Class c, JarContent cls){
+	public int efferentCoupling(JarContent cls){
 		
 		int ifaceNum = 0;
 		int superClass = 0;
 		int composition = 0;
 		
 		// 1) implemented from interfaces
-		JarContent ifaces = cLab.getAnnotatedInterfaces(c);
+		JarContent ifaces = cLab.getAnnotatedInterfaces(this.c);
 		ifaceNum = ifaces.numberOfClasses();
 		
 		// 2) extended from superclasses
@@ -63,5 +70,9 @@ public class InstabilityMeasure implements Measurable {
 			
 		
 		return 0;
+	}
+
+	public void setClass(Class c) {
+		this.c = c;
 	}
 }

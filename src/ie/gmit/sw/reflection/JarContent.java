@@ -42,4 +42,8 @@ public class JarContent{
 	public Class getClass(int index) {
 		return cls.get(index);
 	}
+	
+	public boolean isClassExist(Class c){
+		return cls.contains(c);
+	}
 }

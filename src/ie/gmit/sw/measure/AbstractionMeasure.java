@@ -13,34 +13,42 @@ public class AbstractionMeasure implements Measurable {
 	
 	// classlab instance => full composition
 	private ClassLab c = new ClassLab();
+	private JarContent cls;
+	
+	public AbstractionMeasure(){}
 	
 	// parameterized constructor
 	public AbstractionMeasure(JarContent cls){
-		this.na = getAbstractsNum(cls);
-		this.nc = getConcretesNum(cls);
+		this.cls = cls;
+		this.na = getAbstractsNum();
+		this.nc = getConcretesNum();
 	}
 	
+	// sets content of jar file
+	public void setCls(JarContent cls) {
+		this.cls = cls;
+	}
+
 	// method that returns result
 	public double getResult() {
 		return abstraction;
 	}
 
 	@Override
-	public void measure(JarContent cls) {
+	public void measure() {
 		
 		this.abstraction = (double)this.na / (double)this.nc;
 	}
 	
 	// number of all abstract classes including interfaces 
-	private int getAbstractsNum(JarContent cls){
-		JarContent abs = this.c.getAbstracts(cls);
+	private int getAbstractsNum(){
+		JarContent abs = this.c.getAbstracts(this.cls);
 		return abs.numberOfClasses();
 	}
 	
 	// number of all concrete classes
-	private int getConcretesNum(JarContent cls){
-		JarContent con = this.c.getConcretes(cls);
+	private int getConcretesNum(){
+		JarContent con = this.c.getConcretes(this.cls);
 		return con.numberOfClasses();
 	}
-
 }

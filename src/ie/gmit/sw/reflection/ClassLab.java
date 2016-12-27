@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.AnnotatedType;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.util.jar.JarEntry;
@@ -158,18 +160,8 @@ public class ClassLab {
 		return null;
 	}
 	
-	/*
-	 * Filter for types. ignores all standards classes
-	 * belongs to JDK/JRE.
-	 */
-	public Class typeFilter(JarContent cls, Class c){
-		
-		for(int j = 0; j < cls.numberOfClasses(); j++){
-			if(c.equals(cls.getClass(j))){
-				return c;
-			}
-		}
-		return null;
+	public boolean typeFilter(JarContent cls, Class c){
+		return cls.isClassExist(c) ? true : false;
 	}
 	
 	public JarContent getInstances(JarContent cls, Class c){
@@ -192,5 +184,61 @@ public class ClassLab {
 			}
 		}
 		return classInstances;
+	}
+	
+	public JarContent getConstructorParameters(JarContent cls, Class c){
+		
+		JarContent params = new JarContent();
+		Constructor constrs[] = c.getDeclaredConstructors();
+		
+		if(constrs.length > 0){
+			for(Constructor constr : constrs){
+				Class p[] = constr.getParameterTypes();
+				if(p.length > 0){
+					for(Class item : p){
+						if(typeFilter(cls, item)){
+							params.addClass(item);
+						}
+					}
+				}
+			}
+		}
+		return params;
+	}
+	
+	public JarContent getMethodParameters(JarContent cls, Class c){
+		
+		JarContent params = new JarContent();
+		Method methods[] = c.getDeclaredMethods();
+		
+		if(methods.length > 0){
+			for(Method m : methods){
+				Class p[] = m.getParameterTypes();
+				if(p.length > 0){
+					for(Class item : p){
+						if(typeFilter(cls, item)){
+							params.addClass(item);
+						}
+					}
+				}
+			}
+		}
+		return params;
+	}
+	
+	public JarContent getMethodReturnType(JarContent cls, Class c){
+		
+		JarContent returnTypes = new JarContent();
+		Method methods[] = c.getDeclaredMethods();
+		
+		if(methods.length > 0){
+			for(Method m : methods){
+				Class p = m.getReturnType();
+				if(typeFilter(cls, p)){
+					returnTypes.addClass(p);
+				}
+			}
+		}
+		return returnTypes;
 	}
 }
