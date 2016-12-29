@@ -8,20 +8,32 @@ public class InstabilityMeasure {
 	
 	// instances
 	private List<EfferentCoupling> ceList = new LinkedList<EfferentCoupling>();
-	private JarContent JarContent;
+	private List<AfferentCoupling> caList = new LinkedList<AfferentCoupling>();
+	private JarContent jarContent;
 	
 	public InstabilityMeasure(){}
 
 	public InstabilityMeasure(JarContent jarContent) {
-		this.JarContent = JarContent;
+		this.jarContent = jarContent;
 	}
 	
-	public void createCeList(){
-		for(int i = 0; i < this.JarContent.numberOfClasses(); i++){
-			EfferentCoupling ce = new EfferentCoupling(this.JarContent.getClass(i), this.JarContent);
+	public void createCouplings(){
+		for(int i = 0; i < this.jarContent.numberOfClasses(); i++){
+			EfferentCoupling ce = new EfferentCoupling(this.jarContent.getClass(i), this.jarContent);
 			this.ceList.add(ce);
+		}
+		
+		for(int i = 0; i < this.jarContent.numberOfClasses(); i++){
+			AfferentCoupling ca = new AfferentCoupling(this.jarContent.getClass(i), this.ceList);
+			this.caList.add(ca);
 		}
 	}
 	
+	public List<EfferentCoupling> getCeList(){
+		return this.ceList;
+	}
 	
+	public List<AfferentCoupling> getCaList(){
+		return this.caList;
+	}
 }

@@ -4,9 +4,12 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.util.List;
 
 import ie.gmit.sw.measure.AbstractionMeasure;
+import ie.gmit.sw.measure.AfferentCoupling;
 import ie.gmit.sw.measure.EfferentCoupling;
+import ie.gmit.sw.measure.InstabilityMeasure;
 import ie.gmit.sw.measure.Measurable;
 import ie.gmit.sw.reflection.ClassLab;
 import ie.gmit.sw.reflection.JarContent;
@@ -36,13 +39,26 @@ public class Runner {
 		System.out.println("\n\n-------ABSTRACTION DEGREE--------");
 		System.out.println(String.format("==> Abstracion: (A = Na / NC) = %.1f", abstraction.getResult()));
 		
+		// Ca/Ce
+		InstabilityMeasure im = new InstabilityMeasure(cls);
+		im.createCouplings();
 		
-		// Efference coupling measure
+		List<EfferentCoupling> ceList = im.getCeList();
+		List<AfferentCoupling> caList = im.getCaList();
+		
 		for(int i = 0; i < cls.numberOfClasses(); i++){
-			EfferentCoupling ce = new EfferentCoupling(cls.getClass(i), cls);
-			System.out.println("----CLASS -> " + cls.getClass(i).getSimpleName() + " --> Ce = " + ce.getResult());
+			double ce = 0;
+			double ca = 0;
+			Class c = cls.getClass(i);
+			
+			for(int j = 0; j < cls.numberOfClasses(); j++){
+				if(c.equals(ceList.get(j).getCeClass()))
+					ce = ceList.get(j).getResult();
+				if(c.equals(caList.get(j).getCaClass()))
+					ca = caList.get(j).getResult();
+			}
+			System.out.println("==> CLASS: " + cls.getClass(i).getSimpleName() + "Ce=" + ce + ", Ca=" + ca);
 		}
-		
 		
 		/*
 		System.out.println("\n\n");
