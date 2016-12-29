@@ -1,14 +1,24 @@
 package ie.gmit.sw.measure;
 
-import java.lang.reflect.AnnotatedType;
-
 import ie.gmit.sw.reflection.ClassLab;
 import ie.gmit.sw.reflection.JarContent;
 
-public class EfferentCoupling {
+/**
+ * 
+ * @author g00196984 - Andrej Lavrinovic
+ * 
+ * Efferent Coupling is a number that are representing
+ * all classes that depend upon for current class.
+ * 
+ * To get this number we need to check all fields,
+ * constructors, methods for types that refer to
+ * the classes that belong to the given jar package
+ *
+ */
+
+public class EfferentCoupling implements Measurable{
 
 	private JarContent deps;
-	private int depNum;
 	private Class cl;
 	private JarContent cls;
 	
@@ -18,16 +28,17 @@ public class EfferentCoupling {
 	public EfferentCoupling(Class cl, JarContent cls) {
 		this.cl = cl;
 		this.cls = cls;
-		checkDependencies();
+		measure();
 	}
 	
 	/*
-	 * Efferent Coupling is a number of types, interfaces
-	 * and superclasses that given class is depends on.
+	 * (non-Javadoc)
+	 * @see ie.gmit.sw.measure.Measurable#measure()
 	 * 
-	 * checkDependenies method checks all dependencies for given class
+	 * This method checks all dependencies for given class
 	 */
-	public void checkDependencies(){
+	@Override
+	public void measure(){
 		
 		this.deps = new JarContent();
 		
@@ -62,6 +73,7 @@ public class EfferentCoupling {
 		addDeps(returnType);
 	}
 	
+	// helper method that is used by measure()
 	private void addDeps(JarContent d){
 		if(d.numberOfClasses() > 0){
 			for(int i = 0; i < d.numberOfClasses(); i++){
@@ -72,11 +84,26 @@ public class EfferentCoupling {
 		}
 	}
 
+	// returns collection of classes that are depend upon for current class
 	public JarContent getDeps() {
 		return deps;
 	}
 
-	public int getDepNum() {
-		return deps.numberOfClasses();
+	/*
+	 * (non-Javadoc)
+	 * @see ie.gmit.sw.measure.Measurable#getResult()
+	 * 
+	 * This method returns Efferent coupling that is 
+	 * size of collection of classes that are depend upon
+	 * for current class
+	 */
+	@Override
+	public double getResult() {
+		return (double)deps.numberOfClasses();
+	}
+	
+	// returns current class
+	public Class getCeClass(){
+		return this.cl;
 	}
 }

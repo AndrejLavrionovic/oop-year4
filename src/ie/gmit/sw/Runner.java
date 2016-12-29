@@ -40,7 +40,7 @@ public class Runner {
 		// Efference coupling measure
 		for(int i = 0; i < cls.numberOfClasses(); i++){
 			EfferentCoupling ce = new EfferentCoupling(cls.getClass(i), cls);
-			System.out.println("----CLASS -> " + cls.getClass(i).getSimpleName() + " --> Ce = " + ce.getDepNum());
+			System.out.println("----CLASS -> " + cls.getClass(i).getSimpleName() + " --> Ce = " + ce.getResult());
 		}
 		
 		

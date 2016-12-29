@@ -1,78 +1,27 @@
 package ie.gmit.sw.measure;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Type;
-
-import ie.gmit.sw.reflection.ClassLab;
+import java.util.LinkedList;
+import java.util.List;
 import ie.gmit.sw.reflection.JarContent;
 
-public class InstabilityMeasure implements Measurable {
+public class InstabilityMeasure {
 	
-	// fields
-	private int ce; // efferent coupling
-	private int ca; // afferent coupling
-	private double instability;
-	
-
 	// instances
-	private ClassLab cLab = new ClassLab();
-	private Class c;
+	private List<EfferentCoupling> ceList = new LinkedList<EfferentCoupling>();
+	private JarContent JarContent;
 	
 	public InstabilityMeasure(){}
 
-	public InstabilityMeasure(Class c) {
-		this.c = c;
-	}
-
-	@Override
-	public void measure() {
-		
-	}
-
-	@Override
-	public double getResult() {
-		
-		return 0;
+	public InstabilityMeasure(JarContent jarContent) {
+		this.JarContent = JarContent;
 	}
 	
-	/*
-	 * Efferent coupling calculation
-	 * Ce - is a number of all income dependencies, that is
-	 * the number of classes that have implemented upon current class.
-	 * 
-	 * 1) check all inheritances
-	 */
-	public int efferentCoupling(JarContent cls){
-		
-		int ifaceNum = 0;
-		int superClass = 0;
-		int composition = 0;
-		
-		// 1) implemented from interfaces
-		JarContent ifaces = cLab.getAnnotatedInterfaces(this.c);
-		ifaceNum = ifaces.numberOfClasses();
-		
-		// 2) extended from superclasses
-		if(cLab.getSuperclass(c, cls) != null) superClass = 1;
-		
-		// 3) Full composition
-		// checking for full composition
-		// declared instancies
-		JarContent instances = cLab.getInstances(cls, c);
-		composition = instances.numberOfClasses();
-		
-		// 4) 
-		
-		System.out.println("--------CLASS => " + c.getName() + "------------");
-		System.out.println("--------INTERFACES (" + ifaceNum + ")------------");
-		System.out.println("--------SUPERCLASSES (" + superClass + ")------------");
-		System.out.println("--------INSTANCES (" + composition + ")------------\n\n");
-			
-		
-		return 0;
+	public void createCeList(){
+		for(int i = 0; i < this.JarContent.numberOfClasses(); i++){
+			EfferentCoupling ce = new EfferentCoupling(this.JarContent.getClass(i), this.JarContent);
+			this.ceList.add(ce);
+		}
 	}
-
-	public void setClass(Class c) {
-		this.c = c;
-	}
+	
+	
 }
