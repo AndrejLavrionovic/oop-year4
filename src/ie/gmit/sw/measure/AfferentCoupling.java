@@ -43,10 +43,20 @@ public class AfferentCoupling implements Measurable {
 	 */
 	@Override
 	public void measure() {
+		
+		this.deps = new JarContent();
+		
 		// 1) get class and check how many other classes use it.
 		for (int i = 0; i < ceList.size(); i++){
-			if(cl.equals(ceList.get(i).getCeClass())){
-				this.deps.addClass(ceList.get(i).getCeClass());
+			
+			JarContent d = ceList.get(i).getDeps();
+			
+			if(d.numberOfClasses() > 0){
+				for(int j = 0; j < d.numberOfClasses(); j++){
+					if(cl.equals(d.getClass(j))){
+						this.deps.addClass(ceList.get(i).getCeClass());
+					}
+				}
 			}
 		}
 	}
@@ -63,6 +73,10 @@ public class AfferentCoupling implements Measurable {
 	@Override
 	public double getResult() {
 		return (double)this.deps.numberOfClasses();
+	}
+	
+	public JarContent getDept(){
+		return this.deps;
 	}
 	
 	// returns current class

@@ -129,14 +129,13 @@ public class ClassLab {
 	}
 	
 	// get all implemented interfaces
-	public JarContent getAnnotatedInterfaces(Class c){
+	public JarContent getInterfaces(Class c){
 		
 		JarContent implimentedInterfaces = new JarContent();
 		
-		AnnotatedType ifaces[] = c.getAnnotatedInterfaces();
-		for(AnnotatedType t : ifaces){
-			Class cl = t.getClass();
-			implimentedInterfaces.addClass(cl);
+		Class ifaces[] = c.getInterfaces();
+		for(Class t : ifaces){
+			implimentedInterfaces.addClass(t);
 		}
 		return implimentedInterfaces;
 	}

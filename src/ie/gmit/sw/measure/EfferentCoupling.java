@@ -43,7 +43,7 @@ public class EfferentCoupling implements Measurable{
 		this.deps = new JarContent();
 		
 		// 1) implemented interfaces
-		JarContent ifaces = cLab.getAnnotatedInterfaces(this.cl);
+		JarContent ifaces = cLab.getInterfaces(this.cl);
 		if(ifaces.numberOfClasses() > 0){
 			for(int i = 0; i < ifaces.numberOfClasses(); i ++){
 				this.deps.addClass(ifaces.getClass(i));

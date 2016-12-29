@@ -9,6 +9,7 @@ import java.util.List;
 import ie.gmit.sw.measure.AbstractionMeasure;
 import ie.gmit.sw.measure.AfferentCoupling;
 import ie.gmit.sw.measure.EfferentCoupling;
+import ie.gmit.sw.measure.Instability;
 import ie.gmit.sw.measure.InstabilityMeasure;
 import ie.gmit.sw.measure.Measurable;
 import ie.gmit.sw.reflection.ClassLab;
@@ -42,23 +43,20 @@ public class Runner {
 		// Ca/Ce
 		InstabilityMeasure im = new InstabilityMeasure(cls);
 		im.createCouplings();
+		im.calculateInstabilities();
 		
-		List<EfferentCoupling> ceList = im.getCeList();
-		List<AfferentCoupling> caList = im.getCaList();
+		List<Instability> ins = im.getInstabilities();
 		
-		for(int i = 0; i < cls.numberOfClasses(); i++){
-			double ce = 0;
-			double ca = 0;
-			Class c = cls.getClass(i);
-			
-			for(int j = 0; j < cls.numberOfClasses(); j++){
-				if(c.equals(ceList.get(j).getCeClass()))
-					ce = ceList.get(j).getResult();
-				if(c.equals(caList.get(j).getCaClass()))
-					ca = caList.get(j).getResult();
-			}
-			System.out.println("==> CLASS: " + cls.getClass(i).getSimpleName() + "Ce=" + ce + ", Ca=" + ca);
+		System.out.println("---------------------------------------");
+		System.out.printf("|     CLASS     |  CE  |  CA  |   I   |\n");
+		System.out.println("|---------------|------|------|-------|");
+		for(int i = 0; i < ins.size(); i++){
+			Instability in = ins.get(i);
+			//System.out.println("==> CLASS: " + in.getCl().getSimpleName() + " --> Ce=" + in.getCe() + ", Ca="
+					//+ in.getCa() + ", I=" + in.getI());
+			System.out.printf("| %14s|  %4.2f|  %4.2f|  %4.3f|\n", in.getCl().getSimpleName(), in.getCe(), in.getCa(), in.getI());
 		}
+		System.out.println("---------------------------------------");
 		
 		/*
 		System.out.println("\n\n");
