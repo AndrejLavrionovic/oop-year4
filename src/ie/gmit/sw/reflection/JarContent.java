@@ -31,8 +31,8 @@ public class JarContent{
 		return cls.add(e);
 	}
 
-	public boolean removeClass(Object o) {
-		return cls.remove(o);
+	public boolean removeClass(Class e) {
+		return cls.remove(e);
 	}
 
 	public void removeAllClasses() {

@@ -65,7 +65,7 @@ public class EfferentCoupling implements Measurable{
 		addDeps(constParams);
 		
 		// 5) Methods -> params
-		JarContent methodParams = cLab.getConstructorParameters(this.cls, this.cl);
+		JarContent methodParams = cLab.getMethodParameters(this.cls, this.cl);
 		addDeps(methodParams);
 		
 		// 6) Methods Return type
