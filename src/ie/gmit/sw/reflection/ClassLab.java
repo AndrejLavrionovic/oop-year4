@@ -9,6 +9,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 
@@ -17,18 +19,34 @@ import java.util.jar.JarInputStream;
  * @author g00196984
  *
  * ClassLab is used to work with classes
- * that are retrieved from Jar pachage
+ * that are retrieved from Jar package
  */
 
 public class ClassLab {
 	
 	// fields
 	private JarContent jarClasses;
+	
+	public ClassLab(){}
+	
+	public ClassLab(String jarName){
+		this.jarClasses = getClasses(jarName);
+	}
+	
+	
+	// getters/setters
+	public JarContent getJarClasses(){
+		return this.jarClasses;
+	}
+	
+	public void setJarClasses(String jarName){
+		this.jarClasses = getClasses(jarName);
+	}
 
 	// get all classes from jar
-	public JarContent getAllClasses(String jarName){
+	public JarContent getClasses(String jarName){
 		
-		jarClasses = new JarContent();
+		JarContent classes = new JarContent();
 		
 		try{
 			JarInputStream in = new JarInputStream(new FileInputStream(new File(jarName))); // get stream
@@ -47,7 +65,7 @@ public class ClassLab {
 					Class queryClass;
 					try {
 						queryClass = Class.forName(name);
-						jarClasses.addClass(queryClass);
+						classes.addClass(queryClass);
 					} catch (ClassNotFoundException e) {
 						System.out.println("Couldn't find class '" + name + "'"); // if class is not found
 						System.exit(1);
@@ -61,7 +79,7 @@ public class ClassLab {
 			System.exit(1);
 		}
 		
-		return jarClasses;
+		return classes;
 	}
 	
 	// search only concrete classes

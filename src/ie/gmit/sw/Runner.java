@@ -75,8 +75,8 @@ public class Runner {
 	
 	// get all classes that jar contains
 	private static JarContent getClasses(String jarName){
-		ClassLab c = new ClassLab();
-		JarContent cls = c.getAllClasses(jarName);
+		ClassLab c = new ClassLab(jarName);
+		JarContent cls = c.getJarClasses();
 		
 		return cls;
 	}
