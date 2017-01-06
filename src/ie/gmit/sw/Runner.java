@@ -6,6 +6,11 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.List;
 
+import com.db4o.Db4o;
+import com.db4o.ObjectContainer;
+import com.db4o.ObjectSet;
+
+import ie.gmit.sw.db4o.Methadata;
 import ie.gmit.sw.measure.AbstractionMeasure;
 import ie.gmit.sw.measure.AfferentCoupling;
 import ie.gmit.sw.measure.EfferentCoupling;
@@ -63,7 +68,24 @@ public class Runner {
 		printDetails(cls);
 		*/
 		
+		/*
+		 * :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+		 * Here is db4o code
+		 * :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+		 */
+		ObjectContainer db = Db4o.openFile("db");
 		
+		Methadata mdata = new Methadata("JarFile", 16, 8, 5, 3);
+		
+		db.store(mdata);
+		
+		ObjectSet<Methadata> set = db.query(Methadata.class);
+		
+		for(Methadata item : set){
+			System.out.println("Database records => \nJar Name: " + item.getJarName() + ",\nNumber of classes "
+					 + item.getNumberOfClasses() + ", \n Num. of Stable: " + item.getNumberOfStable() + ",\nNum. fo Instalbe"
+					 + item.getNumberOfInstable() + ",\nNum. of Others: " + item.getNumberOfOthers());
+		}
 	}
 
 	// print all classes that present in the jar
