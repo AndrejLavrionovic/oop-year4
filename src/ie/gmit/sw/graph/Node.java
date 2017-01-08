@@ -1,5 +1,6 @@
 package ie.gmit.sw.graph;
 
+import java.util.LinkedList;
 /**
  * @author g00196984 - Andrej Lavrinovic
  * 
@@ -16,7 +17,9 @@ public class Node {
 	private List<Node> deps;
 	
 	// constructors
-	public Node(){} // default
+	public Node(){
+		this.deps = new LinkedList<Node>();
+	} // default
 	
 	/*
 	 * Parameterized constructor
@@ -38,4 +41,25 @@ public class Node {
 	public void setC(Class c) {
 		this.c = c;
 	}
+
+	public List<Node> getDeps() {
+		return deps;
+	}
+	public List<Edge> getEdges(){
+		return connections;
+	}
+
+	public void setDeps(List<Node> deps) {
+		this.deps = deps;
+	}
+
+	public boolean containsEdge(Edge o) {
+		return connections.contains(o);
+	}
+
+	public boolean addEdge(Edge e) {
+		return connections.add(e);
+	}
+	
+	
 }

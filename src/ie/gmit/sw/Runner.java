@@ -6,6 +6,9 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.List;
 
+import ie.gmit.sw.graph.GraphHandler;
+import ie.gmit.sw.graph.JarGraph;
+import ie.gmit.sw.graph.Node;
 import ie.gmit.sw.measure.AbstractionMeasure;
 import ie.gmit.sw.measure.AfferentCoupling;
 import ie.gmit.sw.measure.EfferentCoupling;
@@ -63,7 +66,28 @@ public class Runner {
 		printDetails(cls);
 		*/
 		
+		// Graph representation
+		System.out.println("\n\n\n-----------GRAPH REPRESENTATION----------------");
+		GraphHandler gh = new GraphHandler(args[0]);
+		gh.setGraph();
+		JarGraph graph = gh.getGraph();
 		
+		for(int i = 0; i < graph.nodesNumber(); i++){
+			Node n = graph.getNode(i);
+			System.out.println("---NODE(" + i + ")---");
+			System.out.println("---Class - " + n.getC().getSimpleName());
+			System.out.println("\n------Dependencies---");
+			
+			for(int j = 0; j < n.getDeps().size(); j++){
+				System.out.println("------Class - " + n.getDeps().get(j).getC().getSimpleName());
+			}
+			
+			System.out.println("\n------Edges---");
+			
+			for(int j = 0; j < n.getEdges().size(); j++){
+				System.out.println("   (" + n.getEdges().get(j).getStart().getC().getSimpleName() + ") --> (" + n.getEdges().get(j).getEnd().getC().getSimpleName() + ")");
+			}
+		}
 	}
 
 	// print all classes that present in the jar

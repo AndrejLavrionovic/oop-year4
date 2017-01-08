@@ -20,12 +20,8 @@ public class Edge {
 	 */
 	public Edge() {}
 
-	public Edge(Node start){
-		this.start = start;
-	}
-
 	public Edge(Node start, Node end) {
-		this();
+		this.start = start;
 		this.end = end;
 	}
 
@@ -49,5 +45,8 @@ public class Edge {
 		this.end = end;
 	}
 	
-	
+	public void setEdge(Node start, Node end){
+		this.start = start;
+		this.end = end;
+	}
 }
