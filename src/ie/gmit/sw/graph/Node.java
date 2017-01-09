@@ -13,13 +13,11 @@ public class Node {
 
 	// instances
 	private Class c;
-	private List<Edge> connections;
-	private List<Node> deps;
+	private List<Edge> connections = new LinkedList<Edge>();
+	private List<Node> deps = new LinkedList<Node>();
 	
 	// constructors
-	public Node(){
-		this.deps = new LinkedList<Node>();
-	} // default
+	public Node(){} // default
 	
 	/*
 	 * Parameterized constructor

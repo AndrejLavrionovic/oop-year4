@@ -3,6 +3,10 @@ package ie.gmit.sw.reflection;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -80,27 +84,125 @@ public class JarClassesLab {
 	 */
 	// get all implemented interfaces
 	public void findInterfaces(Node n){
-		Class c = n.getC();
+		Class c = n.getC(); // get class
 		
 		Class ifaces[] = c.getInterfaces();
 		if(ifaces.length > 0){
 			for(Class item : ifaces){
-				if(!nodeFilter(n, n.getDeps()) && mapOfNodes.containsKey(item)){
-					n.getDeps().add(this.mapOfNodes.get(item));
-					Edge e = new Edge(this.mapOfNodes.get(item), n);
-					mapOfNodes.get(item).addEdge(e);
-				}
+				setEdges(item, n);
 			}
 		}
 	}
 	
 	public void findSuperclass(Node n){
 		
+		// get nodes's class
+		Class c = n.getC();
+		
+		if(!c.isInterface()){ // if class is not an interface
+			
+			Class sclass = c.getSuperclass(); // get superclass
+			
+			setEdges(sclass, n);
+		}
+	}
+	
+	// get node's fiedls
+	public void findFields(Node n) {
+		
+		Class c = n.getC();
+		
+		Field flds[] = c.getDeclaredFields();
+		
+		if(flds.length > 0){
+			
+			for(Field item : flds){
+				Class fieldtype = null;
+				for(Node nd : listOfNodes){
+					if(item.getType().getName().equals(nd.getC().getName())){
+						fieldtype = nd.getC();
+						break;
+					}
+				}
+				
+				if(fieldtype != null){
+					setEdges(fieldtype, n);
+				}
+			}
+		}
+	}
+	
+	// get Constructor parameters
+	public void findConstrParams(Node n){
+		
+		Class c = n.getC();
+		
+		Constructor constrs[] = c.getDeclaredConstructors();
+		
+		if(constrs.length > 0){
+			for(Constructor constr : constrs){
+				Class p[] = constr.getParameterTypes();
+				if(p.length > 0){
+					for(Class item : p){
+						setEdges(item, n);
+					}
+				}
+			}
+		}
+	}
+	
+	// get Method parameters
+	public void findMethodsParams(Node n){
+		
+		Class c = n.getC();
+		
+		Method methods[] = c.getDeclaredMethods();
+		
+		if(methods.length > 0){
+			for(Method m : methods){
+				Class p[] = m.getParameterTypes();
+				if(p.length > 0){
+					for(Class item : p){
+						setEdges(item, n);
+					}
+				}
+			}
+		}
+	}
+	
+	// Method return type
+	public void findMethodsReturnType(Node n){
+		
+		Class c = n.getC();
+		
+		Method methods[] = c.getDeclaredMethods();
+		
+		if(methods.length > 0){
+			for(Method m : methods){
+				Class p = m.getReturnType();
+				setEdges(p, n);
+			}
+		}
 	}
 	
 	// filter checks if current node exist in the list of nodes
-	public boolean nodeFilter(Node n, List<Node> nodes){
-		return nodes.contains(n) ? true : false;
+	private boolean nodeFilter(Node n, List<Node> nodes){
+		if(nodes.size() > 0){
+			return nodes.contains(n) ? true : false;
+		}
+		return false;
+	}
+	
+	/*
+	 * method sets dependencies for current node
+	 * and sets edges for nodes pointing on current node
+	 */
+	private void setEdges(Class c, Node n){
+		if(mapOfNodes.containsKey(c) && !nodeFilter(mapOfNodes.get(c), n.getDeps())){
+			n.getDeps().add(this.mapOfNodes.get(c));
+			Edge e = new Edge(this.mapOfNodes.get(c), n);
+			mapOfNodes.get(c).addEdge(e);
+		}
 	}
 
 	/*

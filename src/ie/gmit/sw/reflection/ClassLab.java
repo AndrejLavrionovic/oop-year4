@@ -73,6 +73,8 @@ public class ClassLab {
 				}
 				next = in.getNextJarEntry();
 			}
+			
+			in.close();
 					
 		}catch(IOException e){
 			System.out.println(e.getMessage());

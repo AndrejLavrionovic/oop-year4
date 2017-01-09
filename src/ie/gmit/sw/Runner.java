@@ -26,16 +26,9 @@ public class Runner {
 	// java -cp ./bin:../people.jar ie.gmit.sw.Runner ../people.jar
 	public static void main(String[] args) {
 		
+		/*
 		// retrieve classes from jar
 		JarContent cls = getClasses(args[0]);
-		
-		/*
-		// prints
-		printAllClasses(cls);
-		printConcreteClasses(cls);
-		printInterfaces(cls);
-		printAbstracts(cls);
-		*/
 		
 		// measure abstraction
 		Measurable abstraction = new AbstractionMeasure(cls);
@@ -60,11 +53,8 @@ public class Runner {
 			System.out.printf("| %14s|  %4.2f|  %4.2f|  %4.3f|\n", in.getCl().getSimpleName(), in.getCe(), in.getCa(), in.getI());
 		}
 		System.out.println("---------------------------------------");
-		
-		/*
-		System.out.println("\n\n");
-		printDetails(cls);
 		*/
+		
 		
 		// Graph representation
 		System.out.println("\n\n\n-----------GRAPH REPRESENTATION----------------");
@@ -87,6 +77,8 @@ public class Runner {
 			for(int j = 0; j < n.getEdges().size(); j++){
 				System.out.println("   (" + n.getEdges().get(j).getStart().getC().getSimpleName() + ") --> (" + n.getEdges().get(j).getEnd().getC().getSimpleName() + ")");
 			}
+			
+			System.out.println("---------------------------------------------------\n\n\n");
 		}
 	}
 

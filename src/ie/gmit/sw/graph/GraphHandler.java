@@ -18,7 +18,7 @@ public class GraphHandler {
 	 * Singleton pattern used to exploit JarClassesLab
 	 * for creating the graph pattern
 	 */
-	private JarClassesLab cLab = JarClassesLab.getInstance(this.jarName);
+	private JarClassesLab cLab;
 	
 	
 	//Constructores
@@ -26,6 +26,7 @@ public class GraphHandler {
 	
 	public GraphHandler(String jarName){ // parameterized
 		this.jarName = jarName;
+		cLab = JarClassesLab.getInstance(this.jarName);
 	}
 	
 	
@@ -38,7 +39,16 @@ public class GraphHandler {
 			
 			// 1) set interfaces
 			cLab.findInterfaces(node);
-			
+			// 2) find superclass
+			cLab.findSuperclass(node);
+			// 3) find Fields
+			cLab.findFields(node);
+			// 4) find Constructors params
+			cLab.findConstrParams(node);
+			// 5) find Method params
+			cLab.findMethodsParams(node);
+			// 6) find Methods return type
+			cLab.findMethodsReturnType(node);
 		}
 	}
 
