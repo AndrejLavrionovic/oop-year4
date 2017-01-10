@@ -5,5 +5,4 @@ import ie.gmit.sw.reflection.JarContent;
 public interface Measurable {
 
 	public void measure();
-	public double getResult();
 }

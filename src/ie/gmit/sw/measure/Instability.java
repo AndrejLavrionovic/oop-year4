@@ -4,8 +4,8 @@ public class Instability {
 
 	// fields for instability
 	private Class cl;
-	private double ce;
-	private double ca;
+	private int ce;
+	private int ca;
 	private double i;
 	
 	
@@ -15,7 +15,7 @@ public class Instability {
 	}
 
 	// parameterazed constructor generated using eclipse
-	public Instability(Class cl, double ce, double ca, double i) {
+	public Instability(Class cl, int ce, int ca, double i) {
 		super();
 		this.cl = cl;
 		this.ce = ce;
@@ -32,19 +32,19 @@ public class Instability {
 		this.cl = cl;
 	}
 
-	public double getCe() {
+	public int getCe() {
 		return ce;
 	}
 
-	public void setCe(double ce) {
+	public void setCe(int ce) {
 		this.ce = ce;
 	}
 
-	public double getCa() {
+	public int getCa() {
 		return ca;
 	}
 
-	public void setCa(double ca) {
+	public void setCa(int ca) {
 		this.ca = ca;
 	}
 
